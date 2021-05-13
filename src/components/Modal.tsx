@@ -1,30 +1,48 @@
-import React, { useImperativeHandle, useState, useCallback } from 'react'
+import React, { useImperativeHandle, useState, useCallback, forwardRef, ReactNode, CSSProperties } from 'react'
+import Portal from './Portal'
+import styles from './Modal.module.scss'
 
 import { X } from 'react-feather'
 
-import styles from './Modal.module.scss'
+interface ModalProps {
+    style?: CSSProperties
+    children: ReactNode
+}
 
-const Modal: React.FC = ({ children }) => {
+export interface ModalHandles {
+    openModal: () => void
+}
+
+const Modal: React.ForwardRefRenderFunction<ModalHandles, ModalProps> = ({ children, style }, ref) => {
     const [ visibility, setVisibility ] = useState(false)
 
+    const openModal = useCallback(() => setVisibility(true), [  ])
+
     const closeModal = useCallback(() => setVisibility(false), [  ])
+
+    useImperativeHandle(ref, () => ({
+        openModal
+    }))
 
     if(!visibility) 
         return null
 
     return (
-        <div className={styles.container}>
-            <header>
-                <button onClick={closeModal}>
-                    <X color='#988BC7'/>
-                </button>
-            </header>
+        <Portal id="modal">
+            <div style={style} className={styles.container}>
+                <header>
+                    <button onClick={closeModal}>
+                        <X color='#988BC7'/>
+                    </button>
+                </header>
 
-            <div>
-                {children}
+                <div>
+                    {children}
+                </div>
             </div>
-        </div>
+        </Portal>
     )
 }
 
-export default Modal
+export default forwardRef(Modal)
+

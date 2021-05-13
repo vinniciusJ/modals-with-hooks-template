@@ -4,4 +4,25 @@
     background: #191622;
 
     color: var(--txt-color);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    button{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: .5rem;
+        padding: 1rem;
+        border: none;
+        border-radius: .5rem;
+
+        background: var(--current-line);
+
+        span {
+            font-size: 1rem;
+            color: var(--purple);
+        }
+    }
 }
