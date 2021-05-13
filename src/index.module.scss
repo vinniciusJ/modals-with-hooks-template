@@ -1,7 +1,7 @@
 .container{
     width: 100vw;
     height: 100vh;
-    background: #191622;
+    background: var(--bg);
 
     color: var(--txt-color);
 
@@ -24,5 +24,20 @@
             font-size: 1rem;
             color: var(--purple);
         }
+    }
+}
+
+.modalTitle {
+    color: var(--txt-color);
+    letter-spacing: .2rem;
+    font-size: 1.6rem;
+    font-weight: 900;
+
+    margin-bottom: .8rem;
+
+    & + p{
+        line-height: 1.5rem;
+        color: var(--txt-color);
+        font-weight: 400;
     }
 }

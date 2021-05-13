@@ -1,46 +1,67 @@
-import React, { useImperativeHandle, useState, useCallback, forwardRef, ReactNode, CSSProperties } from 'react'
+import React, { useImperativeHandle, useState, useCallback, forwardRef, ReactNode, useRef, CSSProperties } from 'react'
 import Portal from './Portal'
 import styles from './Modal.module.scss'
 
 import { X } from 'react-feather'
 
 interface ModalProps {
+    withPortal?: boolean
     style?: CSSProperties
     children: ReactNode
 }
 
-export interface ModalHandles {
+interface ModalHandles {
     openModal: () => void
 }
 
-const Modal: React.ForwardRefRenderFunction<ModalHandles, ModalProps> = ({ children, style }, ref) => {
+export function useModal(){
+    return useRef<ModalHandles>(null)
+}
+
+const Modal: React.ForwardRefRenderFunction<ModalHandles, ModalProps> = ({ children, style, withPortal }, ref) => {
     const [ visibility, setVisibility ] = useState(false)
 
     const openModal = useCallback(() => setVisibility(true), [  ])
 
     const closeModal = useCallback(() => setVisibility(false), [  ])
 
-    useImperativeHandle(ref, () => ({
-        openModal
-    }))
+    useImperativeHandle(ref, () => ({ openModal }))
 
     if(!visibility) 
         return null
 
     return (
-        <Portal id="modal">
-            <div style={style} className={styles.container}>
+        <>
+        { withPortal && (
+            <Portal id="modal">
+                <div style={style} className={styles.container}>
+                    <header>
+                        <button onClick={closeModal}>
+                            <X color='#988BC7'/>
+                        </button>
+                    </header>
+
+                    <div>
+                        {children}
+                    </div>
+                </div>
+            </Portal>
+        ) }
+
+        { withPortal || (
+            <div style={style}  className={styles.container}>
                 <header>
                     <button onClick={closeModal}>
                         <X color='#988BC7'/>
                     </button>
                 </header>
 
-                <div>
+                <div className={styles.contentContainer} >
                     {children}
                 </div>
             </div>
-        </Portal>
+        ) }
+        </>
     )
 }
 
