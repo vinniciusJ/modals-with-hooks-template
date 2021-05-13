@@ -1,0 +1,27 @@
+.container{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60vw;
+    height: 40vh;
+    background: var(--comment);
+    border-radius: 1rem;
+    padding: 2.4rem;
+
+    header{
+        display: flex;
+        justify-content: flex-end;
+        
+        button{
+            background: none;
+            border: none;
+        }
+
+        margin-bottom: 1.6rem;
+    }
+
+    > div {
+        margin-bottom: 1.6rem;
+    }
+}
