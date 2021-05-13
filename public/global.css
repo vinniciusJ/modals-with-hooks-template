@@ -1,0 +1,19 @@
+* {
+    padding: 0%;
+    margin: 0%;
+    box-sizing: border-box;
+}
+
+*, button, input{
+    font-size: 1rem;
+    font-family: 'Roboto', sans-serif;
+}
+
+:root{
+    --bg: #191622;
+    --curent-line: #44475a;
+    --comment: #483C67;
+    --purple:#988BC7;
+    --yellow: #E7DE79;
+    --txt-color: #E1E1E6;
+}
