@@ -1,32 +1,44 @@
-import React, { CSSProperties, useCallback } from 'react'
+import React, { useCallback } from 'react'
 import Modal, { useModal } from './components/Modal'
 import styles from './index.module.scss'
 
 import { Maximize2 } from 'react-feather'
 
-const INLINE_STYLE_MODAL: CSSProperties = {
-	background: 'var(--current-line)',
-	width: '60vw',
-	height: '40vh'
-}
-
 const App: React.FC = () => {
-	const modal = useModal()
+	const firstModalExample = useModal()
+	const secModalExample = useModal()
 
-	const openModal = useCallback(() => modal.current?.openModal(), [ modal ])
+	const openModal = useCallback(({ modal }) => () => modal.current?.openModal(), [ ])
+	const closeModal = useCallback(({ modal }) => () => modal.current?.closeModal(), [ ])
 
 	return (
 		<div className={styles.container}>
-			<button onClick={openModal}>
+			<button onClick={openModal({ modal: firstModalExample })}>
 				<Maximize2 color='#988BC7'/>
 
-				<span>Open Modal</span>
+				<span>Open Modal I</span>
 			</button>
 
-			<Modal ref={modal} withPortal style={INLINE_STYLE_MODAL}>
+			<button onClick={openModal({ modal: secModalExample })}>
+				<Maximize2 color='#988BC7'/>
+
+				<span>Open Modal II</span>
+			</button>
+
+			<Modal ref={firstModalExample} withPortal closeAction={true}>
 				<h1 className={styles.modalTitle}>Hello World</h1>
 
 				<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed delectus accusamus tempore id suscipit nostrum molestias tempora voluptatum doloribus. Sint aliquam distinctio inventore eveniet impedit tenetur quia reprehenderit adipisci. Quia.</p>
+			</Modal>
+
+			<Modal ref={secModalExample} withPortal>
+				<h1 className={styles.modalTitle}>Hello World</h1>
+
+				<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed delectus accusamus tempore id suscipit nostrum molestias tempora voluptatum doloribus. Sint aliquam distinctio inventore eveniet impedit tenetur quia reprehenderit adipisci. Quia.</p>
+
+				<button className={styles.closeButton} onClick={closeModal({ modal: secModalExample })}>
+					Cancel
+				</button>
 			</Modal>
 		</div>
     )

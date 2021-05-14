@@ -6,7 +6,9 @@
     color: var(--txt-color);
 
     display: flex;
+    flex-direction: column;
     align-items: center;
+    gap: 2rem;
     justify-content: center;
 
     button{
@@ -39,5 +41,16 @@
         line-height: 1.5rem;
         color: var(--txt-color);
         font-weight: 400;
+
+        margin-bottom: 1.5rem;
     }
+}
+
+.closeButton{
+    padding: .5rem 1rem;
+    border: none;
+    color: var(--txt-color);
+    background: var(--comment);
+    border-radius: .5rem;
+    filter: brightness(.85);
 }

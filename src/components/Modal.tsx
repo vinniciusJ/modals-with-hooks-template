@@ -8,60 +8,66 @@ interface ModalProps {
     withPortal?: boolean
     style?: CSSProperties
     children: ReactNode
+    closeAction?: boolean
+    id?: string
 }
 
 interface ModalHandles {
     openModal: () => void
+    closeModal: () => void
 }
 
 export function useModal(){
     return useRef<ModalHandles>(null)
 }
 
-const Modal: React.ForwardRefRenderFunction<ModalHandles, ModalProps> = ({ children, style, withPortal }, ref) => {
+const Modal: React.ForwardRefRenderFunction<ModalHandles, ModalProps> = (props, ref) => {
+    const { children, withPortal, closeAction, id } = props
+
     const [ visibility, setVisibility ] = useState(false)
 
     const openModal = useCallback(() => setVisibility(true), [  ])
-
     const closeModal = useCallback(() => setVisibility(false), [  ])
 
-    useImperativeHandle(ref, () => ({ openModal }))
+    useImperativeHandle(ref, () => ({ openModal, closeModal }))
 
     if(!visibility) 
         return null
 
-    return (
-        <>
-        { withPortal && (
-            <Portal id="modal">
-                <div style={style} className={styles.container}>
-                    <header>
-                        <button onClick={closeModal}>
-                            <X color='#988BC7'/>
-                        </button>
-                    </header>
+    if(withPortal){
+        return (
+            <Portal id={id ?? 'modal'}>
+                <div className={styles.container}>
+                    { closeAction && (
+                        <header>
+                            <button onClick={closeModal}>
+                                <X color='#988BC7'/>
+                            </button>
+                        </header>
+                    ) }
 
                     <div>
                         {children}
                     </div>
                 </div>
             </Portal>
-        ) }
+        )
+    }
 
-        { withPortal || (
-            <div style={style}  className={styles.container}>
+    return (
+        <div className={styles.container}>
+            { closeAction && (
                 <header>
                     <button onClick={closeModal}>
                         <X color='#988BC7'/>
                     </button>
                 </header>
+            ) }
 
-                <div className={styles.contentContainer} >
-                    {children}
-                </div>
+            <div className={styles.contentContainer} >
+                {children}
             </div>
-        ) }
-        </>
+        </div>
     )
 }
 
